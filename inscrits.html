@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Mapa GeoJSON con Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <h2>Mapa Interactivo con Leaflet y GeoJSON</h2>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        // Crear el mapa y centrarlo en una ubicación predeterminada (puedes cambiarla)
+        var map = L.map('map').setView([41.3851, 2.1734], 10); // Coordenadas de Barcelona
+
+        // Añadir mapa base de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Cargar y mostrar el archivo Inscrits.geojson
+        fetch('Inscrits.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        return { color: "blue", weight: 2, fillOpacity: 0.5 };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // Agregar un popup con información del GeoJSON
+                        let popupContent = "<b>Nombre:</b> " + (feature.properties.nombre || "No disponible");
+                        layer.bindPopup(popupContent);
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error cargando el GeoJSON:', error));
+    </script>
+</body>
+</html>
