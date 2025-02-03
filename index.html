@@ -19,8 +19,8 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Cargar y mostrar el archivo Inscrits.geojson
-        fetch('Inscrits.geojson')
+        // Cargar y mostrar el archivo BaseC
+        fetch('baseC (1).geojson')
             .then(response => response.json())
             .then(data => {
                 L.geoJSON(data, {
